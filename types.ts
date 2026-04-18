@@ -18,3 +18,10 @@ export interface Partner {
   name: string;
   logo: string;
 }
+
+export interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  image: string;
+}

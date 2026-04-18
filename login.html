@@ -37,18 +37,36 @@
 
     <script>
         // Initialize default storage if empty
+        const defaultUsers = [
+            { 
+                username: '123',
+                password: '123',
+                role: 'client',
+                policies: [
+                    { id: 'POL-777', type: 'Universal Life', premium: '$250.00', expiry: '2028-05-20' },
+                    { id: 'POL-888', type: 'Marine Cargo', premium: '$1,200.00', expiry: '2026-11-10' }
+                ]
+            },
+            { 
+                username: 'client@example.com', 
+                password: 'password123', 
+                role: 'client',
+                policies: [
+                    { id: 'POL-101', type: 'Car Insurance', premium: '$450.00', expiry: '2025-12-01' },
+                    { id: 'POL-102', type: 'Medical Plan', premium: '$120.00/mo', expiry: '2026-06-15' }
+                ]
+            }
+        ];
+
         if (!localStorage.getItem('guardians_users')) {
-            localStorage.setItem('guardians_users', JSON.stringify([
-                { 
-                    username: 'client@example.com', 
-                    password: 'password123', 
-                    role: 'client',
-                    policies: [
-                        { id: 'POL-101', type: 'Car Insurance', premium: '$450.00', expiry: '2025-12-01' },
-                        { id: 'POL-102', type: 'Medical Plan', premium: '$120.00/mo', expiry: '2026-06-15' }
-                    ]
-                }
-            ]));
+            localStorage.setItem('guardians_users', JSON.stringify(defaultUsers));
+        } else {
+            // Ensure the '123' user is added even if storage already exists
+            const existing = JSON.parse(localStorage.getItem('guardians_users'));
+            if (!existing.find(u => u.username === '123')) {
+                existing.push(defaultUsers[0]);
+                localStorage.setItem('guardians_users', JSON.stringify(existing));
+            }
         }
 
         function handleLogin(e) {
@@ -58,6 +76,16 @@
             const errorMsg = document.getElementById('errorMsg');
             
             errorMsg.classList.add('hidden');
+
+            // Hardcoded Test Logic for "123"
+            if (userVal === '123' && passVal === '123') {
+                localStorage.setItem('guardians_session', JSON.stringify({ 
+                    username: '123', 
+                    role: 'client' 
+                }));
+                window.location.href = './dashboard.html';
+                return;
+            }
 
             // Admin Check
             if (userVal === 'guardians' && passVal === '2024') {

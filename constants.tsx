@@ -1,5 +1,5 @@
 
-import { Service, TeamMember, Partner } from './types.ts';
+import { Service, TeamMember, Partner, Testimonial } from './types.ts';
 
 export const SERVICES_DATA: Service[] = [
   {
@@ -65,4 +65,25 @@ export const PARTNERS: Partner[] = [
   { name: 'UFA', logo: 'https://placehold.co/200x100/1e3a5f/ffffff?text=UFA' },
   { name: 'Solidarity', logo: 'https://placehold.co/200x100/1e3a5f/ffffff?text=Solidarity' },
   { name: 'Securite', logo: 'https://placehold.co/200x100/1e3a5f/ffffff?text=Securite' }
+];
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    name: 'Rami Zeidan',
+    role: 'Business Owner',
+    content: 'Guardians Insurance helped me navigate a complex set of business risks. Their local presence makes all the difference when you need immediate answers.',
+    image: 'https://picsum.photos/id/1011/300/300'
+  },
+  {
+    name: 'Maya Khoury',
+    role: 'Homeowner',
+    content: 'Very impressed with the efficiency of their claims process. When my apartment was damaged, they handled everything with extreme professionalism.',
+    image: 'https://picsum.photos/id/1027/300/300'
+  },
+  {
+    name: 'George Haddad',
+    role: 'Frequent Traveler',
+    content: 'I never travel without their coverage. It is comprehensive, affordable, and gives me true peace of mind wherever I am in the world.',
+    image: 'https://picsum.photos/id/1005/300/300'
+  }
 ];
