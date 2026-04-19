@@ -41,6 +41,15 @@
     font-family: var(--font-sans);
     scroll-behavior: smooth;
   }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    opacity: 1;
+    position: relative;
+    z-index: 10;
+  }
 }
 
 @layer utilities {

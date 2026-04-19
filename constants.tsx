@@ -8,7 +8,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🏠',
     shortDescription: 'Comprehensive protection for your home and belongings.',
     fullDescription: 'Our home insurance covers fire, theft, natural disasters, and third-party liability. We ensure your most valuable asset is protected against unforeseen circumstances with 24/7 support and fast claim processing.',
-    image: '/home-insurance.png'
+    image: '/images/home-insurance.png'
   },
   {
     id: 'car',
@@ -16,7 +16,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🚗',
     shortDescription: 'Flexible coverage for all your road adventures.',
     fullDescription: 'From comprehensive plans to third-party liability, our auto insurance keeps you moving. Includes roadside assistance, towing services, and coverage for accidental damage or theft across Lebanon.',
-    image: '/car-insurance.png'
+    image: '/images/car-insurance.png'
   },
   {
     id: 'medical',
@@ -24,7 +24,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🏥',
     shortDescription: 'Health first. World-class medical coverage.',
     fullDescription: 'Access to the top hospitals and clinics in the country. Our plans cover outpatient consultations, surgeries, medications, and maternity with competitive premiums tailored for individuals and families.',
-    image: '/medical-insurance.png'
+    image: '/images/medical-insurance.png'
   },
   {
     id: 'life',
@@ -32,7 +32,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🛡️',
     shortDescription: 'Secure your family\'s future and financial stability.',
     fullDescription: 'Life is unpredictable. Ensure your loved ones are financially protected. Our life insurance offers term and whole-life policies that provide peace of mind and long-term security.',
-    image: '/life-insurance.png'
+    image: '/images/life-insurance.png'
   },
   {
     id: 'travel',
@@ -40,7 +40,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '✈️',
     shortDescription: 'Worry-free journeys around the globe.',
     fullDescription: 'Whether it is for business or leisure, our travel insurance covers medical emergencies abroad, trip cancellations, lost luggage, and flight delays. Compliant with Schengen visa requirements.',
-    image: '/travel-insurance.png'
+    image: '/images/travel-insurance.png'
   },
   {
     id: 'business',
@@ -48,7 +48,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '💼',
     shortDescription: 'Protecting your enterprise and professional assets.',
     fullDescription: 'Tailored solutions for businesses of all sizes. From property and liability to employee benefits and cargo protection, we help your business thrive with confidence.',
-    image: '/business-insurance.png'
+    image: '/images/business-insurance.png'
   }
 ];
 

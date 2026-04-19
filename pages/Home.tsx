@@ -50,7 +50,7 @@ const Home: React.FC = () => {
       <section className="relative h-[85vh] flex items-center bg-steel-blue overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <img 
-            src="/hero-background.png" 
+            src="/images/hero-background.png" 
             alt="Hero Background" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
               className="relative"
             >
               <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-                <img src="/what-is-insurance.png" alt="Insurance Guide" className="w-full h-auto" referrerPolicy="no-referrer" />
+                <img src="/images/what-is-insurance.png" alt="Insurance Guide" className="w-full h-auto" referrerPolicy="no-referrer" />
               </div>
               <div className="absolute -bottom-8 -left-8 bg-teal-primary p-10 rounded-3xl shadow-2xl hidden lg:block">
                 <div className="text-5xl font-black text-white">7+</div>
