@@ -25,3 +25,15 @@ export interface Testimonial {
   content: string;
   image: string;
 }
+
+export type InsuranceType = 'car' | 'medical' | 'travel' | 'life' | 'home' | 'business';
+
+export interface ComparisonResult {
+  company: string;
+  priceLevel: 'Low' | 'Medium' | 'High';
+  flexibility: string;
+  claimsSpeed: string;
+  networkStrength: string;
+  bestUseCase: string;
+  isRecommended?: boolean;
+}

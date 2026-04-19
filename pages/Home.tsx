@@ -1,12 +1,36 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, ShieldCheck, PhoneCall, Zap, MapPin } from 'lucide-react';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  CheckCircle2, 
+  ArrowRight, 
+  ShieldCheck, 
+  PhoneCall, 
+  Zap, 
+  MapPin,
+  Heart,
+  Home as HomeIcon,
+  Plane,
+  Car,
+  Users,
+  Briefcase
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { SERVICES_DATA } from '../constants.tsx';
+import PlanComparer from '../src/components/ComparePlans/PlanComparer.tsx';
+import { InsuranceType } from '../types.ts';
 
 const Home: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [isComparerOpen, setIsComparerOpen] = useState(false);
+  const [initialComparerType, setInitialComparerType] = useState<InsuranceType | null>(null);
+
+  const openComparer = (type: InsuranceType | null = null) => {
+    setInitialComparerType(type);
+    setIsComparerOpen(true);
+  };
 
   const scrollLeft = () => {
     if (carouselRef.current) {
@@ -29,6 +53,7 @@ const Home: React.FC = () => {
             src="/hero-background.png" 
             alt="Hero Background" 
             className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
           />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -50,9 +75,12 @@ const Home: React.FC = () => {
                 <span>Get a Quote</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link to="/about" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-4 rounded-xl font-bold text-lg transition-all">
-                Learn More
-              </Link>
+              <button 
+                onClick={() => openComparer(null)}
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-4 rounded-xl font-bold text-lg transition-all"
+              >
+                Compare Plans
+              </button>
             </div>
           </motion.div>
         </div>
@@ -71,16 +99,15 @@ const Home: React.FC = () => {
               <div className="inline-block px-4 py-1 rounded-full bg-teal-primary/10 text-teal-primary text-xs font-bold tracking-widest uppercase mb-4">
                 Insurance Guide
               </div>
-              <h2 className="text-4xl font-black text-text-dark mb-6">What Is Insurance?</h2>
+              <h2 className="text-4xl font-black text-text-dark mb-6">Get the Best Insurance in Lebanon — Without Overpaying</h2>
               <p className="text-gray-500 text-lg leading-relaxed mb-8">
-                Insurance is a financial safety net. It's a contract between you and an insurer that helps you handle the costs of unexpected events. By paying a small regular premium, you transfer the risk of major losses to us.
+                We compare top insurance companies like Fidelity, Bankers, UFA & Solidarity to find you the best coverage at the best price.
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-4 mb-10">
                 {[
-                  'Financial peace of mind for your family',
-                  'Coverage for large, unexpected expenses',
-                  'Expert support during crises',
-                  'Tailored plans for your specific life stage'
+                  'Instant comparison',
+                  'Personalized plans',
+                  'No hidden fees'
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">
                     <CheckCircle2 className="text-teal-primary mr-3 w-6 h-6 shrink-0" />
@@ -88,6 +115,18 @@ const Home: React.FC = () => {
                   </li>
                 ))}
               </ul>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/services" className="bg-teal-primary hover:bg-teal-primary/90 text-white px-8 py-4 rounded-xl font-bold text-base transition-all transform hover:scale-105 shadow-xl flex items-center justify-center space-x-2">
+                  <span>Get My Best Plan Now</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <button 
+                  onClick={() => openComparer(null)}
+                  className="bg-white hover:bg-gray-50 text-text-dark border-2 border-gray-100 px-8 py-4 rounded-xl font-bold text-base transition-all flex items-center justify-center"
+                >
+                  Compare Plans
+                </button>
+              </div>
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -97,7 +136,7 @@ const Home: React.FC = () => {
               className="relative"
             >
               <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-                <img src="/what-is-insurance.png" alt="Insurance Guide" className="w-full h-auto" />
+                <img src="/what-is-insurance.png" alt="Insurance Guide" className="w-full h-auto" referrerPolicy="no-referrer" />
               </div>
               <div className="absolute -bottom-8 -left-8 bg-teal-primary p-10 rounded-3xl shadow-2xl hidden lg:block">
                 <div className="text-5xl font-black text-white">7+</div>
@@ -137,17 +176,25 @@ const Home: React.FC = () => {
                 className="min-w-[320px] bg-white rounded-3xl overflow-hidden shadow-xl snap-start border border-blue-100/10 hover:border-teal-primary/50 transition-all group"
               >
                 <div className="h-56 overflow-hidden relative">
-                  <img src={service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    referrerPolicy="no-referrer"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
                 </div>
                 <div className="p-8">
                   <div className="text-4xl mb-6 transform group-hover:scale-110 transition-transform origin-left">{service.icon}</div>
                   <h3 className="text-2xl font-bold text-text-dark mb-3">{service.title}</h3>
                   <p className="text-gray-500 text-sm mb-8 leading-relaxed">{service.shortDescription}</p>
-                  <Link to="/services" className="text-teal-primary font-bold hover:text-blue-700 transition-colors flex items-center group/link">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/link:translate-x-2 transition-transform" />
-                  </Link>
+                  <button 
+                    onClick={() => openComparer(service.id as InsuranceType)}
+                    className="w-full bg-teal-primary/10 hover:bg-teal-primary text-teal-primary hover:text-white py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2 group/btn"
+                  >
+                    <span>Compare Plans</span>
+                    <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -241,6 +288,12 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <PlanComparer 
+        isOpen={isComparerOpen} 
+        onClose={() => setIsComparerOpen(false)} 
+        initialType={initialComparerType}
+      />
     </div>
   );
 };
