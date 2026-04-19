@@ -188,13 +188,22 @@ const Home: React.FC = () => {
                   <div className="text-4xl mb-6 transform group-hover:scale-110 transition-transform origin-left">{service.icon}</div>
                   <h3 className="text-2xl font-bold text-text-dark mb-3">{service.title}</h3>
                   <p className="text-gray-500 text-sm mb-8 leading-relaxed">{service.shortDescription}</p>
-                  <button 
-                    onClick={() => openComparer(service.id as InsuranceType)}
-                    className="w-full bg-teal-primary/10 hover:bg-teal-primary text-teal-primary hover:text-white py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2 group/btn"
-                  >
-                    <span>Compare Plans</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+                  <div className="flex flex-col gap-3">
+                    <a 
+                      href="#contact"
+                      className="w-full bg-teal-primary text-white py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2 shadow-lg hover:shadow-teal-primary/20 active:scale-95"
+                    >
+                      <span>Get Quote</span>
+                      <PhoneCall className="w-4 h-4" />
+                    </a>
+                    <button 
+                      onClick={() => openComparer(service.id as InsuranceType)}
+                      className="w-full bg-teal-primary/5 hover:bg-teal-primary/10 text-teal-primary py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2 group/btn border border-teal-primary/20"
+                    >
+                      <span>Compare Plans</span>
+                      <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}

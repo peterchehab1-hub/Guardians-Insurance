@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { X, ArrowRight, Info, Phone, Mail, User, ShieldCheck, Send, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SERVICES_DATA } from '../constants.tsx';
-import { Service } from '../types.ts';
+import { InsuranceType, Service } from '../types.ts';
+import PlanComparer from '../src/components/ComparePlans/PlanComparer.tsx';
 
 // Extended type for internal use
 interface ExtendedService extends Service {
@@ -17,6 +18,13 @@ const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<ExtendedService | null>(null);
   const [showQuoteForm, setShowQuoteForm] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isComparerOpen, setIsComparerOpen] = useState(false);
+  const [initialComparerType, setInitialComparerType] = useState<InsuranceType | null>(null);
+
+  const openComparer = (type: InsuranceType | null = null) => {
+    setInitialComparerType(type);
+    setIsComparerOpen(true);
+  };
 
   const openModal = (service: Service) => {
     const extended: ExtendedService = {
@@ -94,13 +102,22 @@ const Services: React.FC = () => {
                   <p className="text-gray-500 mb-10 flex-grow leading-relaxed text-lg">
                     {service.shortDescription}
                   </p>
-                  <button 
-                    onClick={() => openModal(service)}
-                    className="w-full bg-teal-primary hover:bg-teal-primary/90 text-white py-5 rounded-2xl font-black transition-all flex items-center justify-center group/btn uppercase tracking-widest text-sm shadow-xl"
-                  >
-                    <span>View Details</span>
-                    <ArrowRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-2 transition-transform" />
-                  </button>
+                  <div className="flex flex-col gap-3 mt-auto">
+                    <button 
+                      onClick={() => openModal(service)}
+                      className="w-full bg-teal-primary hover:bg-teal-primary/90 text-white py-4 rounded-2xl font-black transition-all flex items-center justify-center group/btn uppercase tracking-widest text-sm shadow-xl"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-2 transition-transform" />
+                    </button>
+                    <button 
+                      onClick={() => openComparer(service.id as InsuranceType)}
+                      className="w-full bg-teal-primary/10 hover:bg-teal-primary text-teal-primary hover:text-white py-4 rounded-2xl font-black transition-all flex items-center justify-center space-x-2 group/btn border border-teal-primary/30 uppercase tracking-widest text-sm"
+                    >
+                      <span>Compare Plans</span>
+                      <ArrowRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-2 transition-transform" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -270,6 +287,12 @@ const Services: React.FC = () => {
           </div>
         )}
       </AnimatePresence>
+
+      <PlanComparer 
+        isOpen={isComparerOpen} 
+        onClose={() => setIsComparerOpen(false)} 
+        initialType={initialComparerType}
+      />
     </div>
   );
 };
