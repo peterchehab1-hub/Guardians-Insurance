@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "App user (admin or staff)",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "staff"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "createdAt"]
+    },
+    "client": {
+      "title": "Client",
+      "description": "Insurance client",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "address": { "type": "string" },
+        "idImageUrls": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "createdAt"]
+    },
+    "service": {
+      "title": "Service",
+      "description": "Insurance service product",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "icon": { "type": "string" },
+        "shortDescription": { "type": "string" },
+        "fullDescription": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["title", "shortDescription"]
+    },
+    "policy": {
+      "title": "Policy",
+      "description": "Insurance policy held by a client",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "policyNumber": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "pending", "expired", "cancelled"] },
+        "pdfUrl": { "type": "string" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "premium": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientId", "serviceId", "policyNumber", "status", "createdAt"]
+    },
+    "payment": {
+      "title": "Payment",
+      "description": "Policy premium payment",
+      "type": "object",
+      "properties": {
+        "policyId": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["paid", "pending", "overdue"] },
+        "date": { "type": "string", "format": "date-time" },
+        "receiptUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["policyId", "amount", "status", "date", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Users of the management system"
+    },
+    "/clients/{clientId}": {
+      "schema": "client",
+      "description": "Storage for client profiles"
+    },
+    "/services/{serviceId}": {
+      "schema": "service",
+      "description": "Insurance types and descriptions"
+    },
+    "/policies/{policyId}": {
+      "schema": "policy",
+      "description": "Individual client insurance policies"
+    },
+    "/payments/{paymentId}": {
+      "schema": "payment",
+      "description": "Financial records of payments made by clients"
+    }
+  }
+}

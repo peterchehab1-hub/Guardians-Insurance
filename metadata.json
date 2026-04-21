@@ -1,5 +1,6 @@
 {
   "name": "Guardians Insurance Elite",
   "description": "Premium insurance website with Client Portal and Admin Management. Light professional aesthetic.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }

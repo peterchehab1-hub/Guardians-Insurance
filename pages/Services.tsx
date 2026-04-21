@@ -1,10 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ArrowRight, Info, Phone, Mail, User, ShieldCheck, Send, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SERVICES_DATA } from '../constants.tsx';
 import { InsuranceType, Service } from '../types.ts';
 import PlanComparer from '../src/components/ComparePlans/PlanComparer.tsx';
+import { insuranceService } from '../src/services/insuranceService';
 
 // Extended type for internal use
 interface ExtendedService extends Service {
@@ -15,11 +16,30 @@ interface ExtendedService extends Service {
 }
 
 const Services: React.FC = () => {
+  const [services, setServices] = useState<Service[]>(SERVICES_DATA);
+  const [loadingServices, setLoadingServices] = useState(true);
   const [selectedService, setSelectedService] = useState<ExtendedService | null>(null);
   const [showQuoteForm, setShowQuoteForm] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isComparerOpen, setIsComparerOpen] = useState(false);
   const [initialComparerType, setInitialComparerType] = useState<InsuranceType | null>(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const firestoreServices = await insuranceService.getAllServices();
+        if (firestoreServices && firestoreServices.length > 0) {
+          setServices(firestoreServices);
+        }
+      } catch (error) {
+        console.error('Error fetching services from Firestore:', error);
+      } finally {
+        setLoadingServices(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const openComparer = (type: InsuranceType | null = null) => {
     setInitialComparerType(type);
@@ -81,7 +101,7 @@ const Services: React.FC = () => {
       <section className="py-24 bg-bg-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {SERVICES_DATA.map((service, index) => (
+            {services.map((service, index) => (
               <motion.div 
                 key={service.id} 
                 initial={{ opacity: 0, y: 20 }}

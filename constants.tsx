@@ -1,5 +1,11 @@
 
 import { Service, TeamMember, Partner, Testimonial } from './types.ts';
+import homeImg from './src/assets/images/home-insurance.png';
+import carImg from './src/assets/images/car-insurance.png';
+import medicalImg from './src/assets/images/medical-insurance.png';
+import lifeImg from './src/assets/images/life-insurance.png';
+import travelImg from './src/assets/images/travel-insurance.png';
+import businessImg from './src/assets/images/business-insurance.png';
 
 export const SERVICES_DATA: Service[] = [
   {
@@ -8,7 +14,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🏠',
     shortDescription: 'Comprehensive protection for your home and belongings.',
     fullDescription: 'Our home insurance covers fire, theft, natural disasters, and third-party liability. We ensure your most valuable asset is protected against unforeseen circumstances with 24/7 support and fast claim processing.',
-    image: '/images/home-insurance.png'
+    image: homeImg
   },
   {
     id: 'car',
@@ -16,7 +22,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🚗',
     shortDescription: 'Flexible coverage for all your road adventures.',
     fullDescription: 'From comprehensive plans to third-party liability, our auto insurance keeps you moving. Includes roadside assistance, towing services, and coverage for accidental damage or theft across Lebanon.',
-    image: '/images/car-insurance.png'
+    image: carImg
   },
   {
     id: 'medical',
@@ -24,7 +30,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🏥',
     shortDescription: 'Health first. World-class medical coverage.',
     fullDescription: 'Access to the top hospitals and clinics in the country. Our plans cover outpatient consultations, surgeries, medications, and maternity with competitive premiums tailored for individuals and families.',
-    image: '/images/medical-insurance.png'
+    image: medicalImg
   },
   {
     id: 'life',
@@ -32,7 +38,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '🛡️',
     shortDescription: 'Secure your family\'s future and financial stability.',
     fullDescription: 'Life is unpredictable. Ensure your loved ones are financially protected. Our life insurance offers term and whole-life policies that provide peace of mind and long-term security.',
-    image: '/images/life-insurance.png'
+    image: lifeImg
   },
   {
     id: 'travel',
@@ -40,7 +46,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '✈️',
     shortDescription: 'Worry-free journeys around the globe.',
     fullDescription: 'Whether it is for business or leisure, our travel insurance covers medical emergencies abroad, trip cancellations, lost luggage, and flight delays. Compliant with Schengen visa requirements.',
-    image: '/images/travel-insurance.png'
+    image: travelImg
   },
   {
     id: 'business',
@@ -48,7 +54,7 @@ export const SERVICES_DATA: Service[] = [
     icon: '💼',
     shortDescription: 'Protecting your enterprise and professional assets.',
     fullDescription: 'Tailored solutions for businesses of all sizes. From property and liability to employee benefits and cargo protection, we help your business thrive with confidence.',
-    image: '/images/business-insurance.png'
+    image: businessImg
   }
 ];
 

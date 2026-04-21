@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, 
@@ -20,12 +20,30 @@ import {
 import { motion } from 'motion/react';
 import { SERVICES_DATA } from '../constants.tsx';
 import PlanComparer from '../src/components/ComparePlans/PlanComparer.tsx';
-import { InsuranceType } from '../types.ts';
+import { InsuranceType, Service } from '../types.ts';
+import heroImg from '../src/assets/images/hero-background.png';
+import whatIsInsuranceImg from '../src/assets/images/what-is-insurance.png';
+import { insuranceService } from '../src/services/insuranceService';
 
 const Home: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [services, setServices] = useState<Service[]>(SERVICES_DATA);
   const [isComparerOpen, setIsComparerOpen] = useState(false);
   const [initialComparerType, setInitialComparerType] = useState<InsuranceType | null>(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const firestoreServices = await insuranceService.getAllServices();
+        if (firestoreServices && firestoreServices.length > 0) {
+          setServices(firestoreServices);
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+    fetchServices();
+  }, []);
 
   const openComparer = (type: InsuranceType | null = null) => {
     setInitialComparerType(type);
@@ -50,7 +68,7 @@ const Home: React.FC = () => {
       <section className="relative h-[85vh] flex items-center bg-steel-blue overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <img 
-            src="/images/hero-background.png" 
+            src={heroImg} 
             alt="Hero Background" 
             className="w-full h-full object-cover"
           />
@@ -135,7 +153,7 @@ const Home: React.FC = () => {
               className="relative"
             >
               <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-                <img src="/images/what-is-insurance.png" alt="Insurance Guide" className="w-full h-auto" />
+                <img src={whatIsInsuranceImg} alt="Insurance Guide" className="w-full h-auto" />
               </div>
               <div className="absolute -bottom-8 -left-8 bg-teal-primary p-10 rounded-3xl shadow-2xl hidden lg:block">
                 <div className="text-5xl font-black text-white">7+</div>
@@ -168,7 +186,7 @@ const Home: React.FC = () => {
             ref={carouselRef}
             className="flex overflow-x-auto space-x-8 pb-12 hide-scrollbar snap-x"
           >
-            {SERVICES_DATA.map((service) => (
+            {services.map((service) => (
               <motion.div 
                 key={service.id} 
                 whileHover={{ y: -10 }}
