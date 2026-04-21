@@ -194,7 +194,7 @@ const Home: React.FC = () => {
               >
                 <div className="h-56 overflow-hidden relative">
                   <img 
-                    src={service.image} 
+                    src={service.imageUrl || service.image} 
                     alt={service.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                   />

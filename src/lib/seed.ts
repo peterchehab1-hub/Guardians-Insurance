@@ -11,9 +11,13 @@ export const seedInitialData = async () => {
     
     for (const service of SERVICES_DATA) {
       const newDocRef = doc(collection(db, 'services'));
-      // Remove id from the data object as firestore uses doc id
+      // Firestore uses doc id, and we standardize on imageUrl
       const { id, ...data } = service;
-      batch.set(newDocRef, { ...data, category: 'General' });
+      batch.set(newDocRef, { 
+        ...data, 
+        category: 'General',
+        imageUrl: service.imageUrl || service.image || ''
+      });
     }
     
     await batch.commit();

@@ -5,7 +5,9 @@ export interface Service {
   icon: string;
   shortDescription: string;
   fullDescription: string;
-  image: string;
+  image?: string;
+  imageUrl?: string;
+  category?: string;
 }
 
 export interface TeamMember {
