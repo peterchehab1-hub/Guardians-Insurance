@@ -111,7 +111,7 @@ const Services: React.FC = () => {
                 className="bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 hover:border-teal-primary/40 transition-all hover:shadow-2xl flex flex-col h-full group"
               >
                 <div className="h-64 overflow-hidden relative">
-                  <img src={service.imageUrl || service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img src={service.imageUrl || service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
                   <div className="absolute top-6 left-6 bg-white/10 backdrop-blur-md rounded-2xl w-14 h-14 flex items-center justify-center text-3xl border border-white/20 shadow-xl">
                     {service.icon}
                   </div>
@@ -171,7 +171,7 @@ const Services: React.FC = () => {
               
               <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/2 h-80 lg:h-auto overflow-hidden relative">
-                  <img src={selectedService.imageUrl || selectedService.image} alt={selectedService.title} className="w-full h-full object-cover" />
+                  <img src={selectedService.imageUrl || selectedService.image} alt={selectedService.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white hidden lg:block"></div>
                 </div>
                 <div className="lg:w-1/2 p-10 lg:p-16">
