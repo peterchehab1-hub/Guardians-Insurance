@@ -47,11 +47,8 @@ export const ClientsView: React.FC = () => {
         <button 
           id="add-client-trigger"
           onClick={() => setShowAddModal(true)}
-          className="bg-teal-primary hover:bg-teal-primary/90 text-white px-8 py-4 rounded-2xl font-black flex items-center space-x-2 shadow-lg transition-all active:scale-95"
-        >
-          <Plus className="w-5 h-5" />
-          <span>Add New Client</span>
-        </button>
+          className="hidden"
+        />
       </div>
 
       <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">

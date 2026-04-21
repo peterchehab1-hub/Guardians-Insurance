@@ -56,11 +56,8 @@ export const PaymentsView: React.FC = () => {
         <button 
           id="add-payment-trigger"
           onClick={() => setShowAddModal(true)}
-          className="bg-teal-primary hover:bg-teal-primary/90 text-white px-8 py-4 rounded-2xl font-black flex items-center space-x-2 shadow-lg transition-all active:scale-95"
-        >
-          <Plus className="w-5 h-5" />
-          <span>Record Payment</span>
-        </button>
+          className="hidden"
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

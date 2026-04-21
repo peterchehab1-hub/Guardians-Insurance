@@ -20,6 +20,12 @@ const ScrollToTop = () => {
   return null;
 };
 
+const ConditionalFAB = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/client-dashboard');
+  return !isDashboard ? <FloatingActionButton /> : null;
+};
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -40,7 +46,7 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <Footer />
-          <FloatingActionButton />
+          <ConditionalFAB />
         </div>
       </Router>
     </AuthProvider>
