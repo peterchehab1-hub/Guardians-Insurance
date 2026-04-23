@@ -6,14 +6,13 @@ export const seedInitialData = async () => {
   try {
     const currentUser = auth.currentUser;
     console.log('--- SEEDING AUTH CHECK ---');
-    console.log('User detected:', !!currentUser);
-    if (currentUser) {
-      console.log('User Email:', currentUser?.email);
-      console.log('User UID:', currentUser?.uid);
-      console.log('Is Email Verified:', currentUser?.emailVerified);
-    }
+    console.log('User detected:', currentUser?.email);
+    console.log('Check: If you see ERR_BLOCKED_BY_CLIENT, disable your AdBlocker.');
     console.log('--------------------------');
 
+    console.log('Operation: Testing database reachability...');
+    const dbTest = collection(db, 'services');
+    
     console.log('Operation: Fetching services snapshot');
     const servicesSnapshot = await getDocs(collection(db, 'services'));
     const existingTitles = servicesSnapshot.docs.map(d => d.data().title);

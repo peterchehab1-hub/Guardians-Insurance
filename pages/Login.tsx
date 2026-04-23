@@ -117,28 +117,34 @@ const Login: React.FC = () => {
                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               )}
               <input 
+                id="login-identifier"
+                name="identifier"
                 required
                 type={isClient ? 'text' : 'email'} 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={isClient ? 'e.g. Peter' : 'admin@guardians.com'} 
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-14 pr-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium" 
+                autoComplete={isClient ? 'username' : 'email'}
               />
             </div>
           </div>
           <div>
-            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3" htmlFor="login-password">
               {isClient ? 'Phone Number' : 'Password'}
             </label>
             <div className="relative">
               <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
+                id="login-password"
+                name="password"
                 required
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={isClient ? 'e.g. 71971213' : '••••••••'} 
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-14 pr-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium" 
+                autoComplete="current-password"
               />
             </div>
           </div>
