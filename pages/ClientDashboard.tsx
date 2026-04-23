@@ -24,22 +24,34 @@ const ClientDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (!authLoading && !profile) {
       navigate('/login?role=client');
     }
 
     const fetchData = async () => {
-      if (!user) return;
+      if (!profile) return;
       setLoading(true);
       try {
-        // In a real app, we'd filter by the user's clientId
-        // Since we are setting up, we'll try to find policies for this user's email
+        // First priority: Policies collection
         const policiesQuery = query(
           collection(db, 'policies'), 
-          where('clientEmail', '==', user.email)
+          where('clientEmail', '==', profile.email || '')
         );
         const policySnap = await getDocs(policiesQuery);
-        const fetchedPolicies = policySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        let fetchedPolicies: any[] = policySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // Second priority: If no policies found in collection, check the profile fields
+        if (fetchedPolicies.length === 0 && profile.policyType) {
+          fetchedPolicies = [{
+            id: 'legacy-policy',
+            type: profile.policyType,
+            policyNumber: profile.policyNumber || 'G-PENDING',
+            status: 'active',
+            premium: profile.premium || 'Quote Pending',
+            endDate: (profile as any).endDate || new Date(Date.now() + 31536000000).toISOString() // 1 year default
+          }];
+        }
+
         setPolicies(fetchedPolicies);
 
         // Fetch payments for these policies
@@ -102,7 +114,7 @@ const ClientDashboard: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 py-12 flex-grow w-full">
         <header className="mb-12">
           <h1 className="text-4xl font-black text-text-dark mb-2">Welcome back,</h1>
-          <p className="text-gray-500 font-medium">{user?.email}</p>
+          <p className="text-gray-500 font-medium">{profile?.name || profile?.email || 'Valued Client'}</p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

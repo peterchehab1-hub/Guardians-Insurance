@@ -138,11 +138,22 @@ const AddClientModal: React.FC<{ onClose: () => void; onSuccess: () => void }> =
     name: '',
     email: '',
     phone: '',
-    address: ''
+    address: '',
+    policyType: '',
+    policyNumber: ''
   });
   const [idFiles, setIdFiles] = useState<File[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const data = await insuranceService.getAllServices();
+      setServices(data);
+    };
+    fetchServices();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,6 +256,34 @@ const AddClientModal: React.FC<{ onClose: () => void; onSuccess: () => void }> =
                   onChange={(e) => setFormData({...formData, address: e.target.value})}
                   className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium" 
                 />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-teal-primary/5 rounded-[2rem] border border-teal-primary/10">
+                <div>
+                  <label className="block text-[10px] font-black text-teal-primary uppercase tracking-widest mb-3">Policy Type</label>
+                  <select 
+                    required
+                    value={formData.policyType}
+                    onChange={(e) => setFormData({...formData, policyType: e.target.value})}
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-bold text-sm shadow-sm"
+                  >
+                    <option value="">Select a policy...</option>
+                    {services.map(s => (
+                      <option key={s.id} value={s.title}>{s.title}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-teal-primary uppercase tracking-widest mb-3">Policy Number</label>
+                  <input 
+                    required
+                    type="text" 
+                    placeholder="G-12345678" 
+                    value={formData.policyNumber}
+                    onChange={(e) => setFormData({...formData, policyNumber: e.target.value})}
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium shadow-sm" 
+                  />
+                </div>
               </div>
 
               <div>

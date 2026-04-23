@@ -14,11 +14,13 @@ import {
   LayoutDashboard,
   ShieldCheck,
   Plus,
-  Database
+  Database,
+  Sparkles
 } from 'lucide-react';
 import { ClientsView } from './ClientsList';
-import { PoliciesView } from './PoliciesList';
+import { ServicesView } from './PoliciesList';
 import { PaymentsView } from './PaymentsList';
+import { AIAssistant } from '../src/components/AIAssistant';
 
 const DashboardHome: React.FC = () => {
   const [seeding, setSeeding] = React.useState(false);
@@ -26,11 +28,15 @@ const DashboardHome: React.FC = () => {
   const handleSeed = async () => {
     setSeeding(true);
     try {
-      await seedInitialData();
-      alert('Data seeded successfully!');
+      const result = await seedInitialData();
+      if (result) {
+        alert('Data initialization complete. Services and test client added!');
+      } else {
+        alert('Initial data already exists.');
+      }
     } catch (err) {
       console.error(err);
-      alert('Failed to seed data.');
+      alert('Failed to initialize data. Check console for errors.');
     } finally {
       setSeeding(false);
     }
@@ -110,8 +116,9 @@ const Dashboard: React.FC = () => {
   const navItems = [
     { label: 'Overview', icon: <LayoutDashboard className="w-5 h-5" />, path: '/dashboard' },
     { label: 'Clients', icon: <Users className="w-5 h-5" />, path: '/dashboard/clients' },
-    { label: 'Policies', icon: <ShieldCheck className="w-5 h-5" />, path: '/dashboard/policies' },
+    { label: 'Services', icon: <ShieldCheck className="w-5 h-5" />, path: '/dashboard/policies' },
     { label: 'Payments', icon: <CreditCard className="w-5 h-5" />, path: '/dashboard/payments' },
+    { label: 'AI Assistant', icon: <Sparkles className="w-5 h-5" />, path: '/dashboard/ai' },
     { label: 'Settings', icon: <Settings className="w-5 h-5" />, path: '/dashboard/settings' },
   ];
 
@@ -196,7 +203,7 @@ const Dashboard: React.FC = () => {
               <Plus className="w-5 h-5" />
               <span>
                 {location.pathname === '/dashboard/clients' ? 'Add Client' : 
-                 location.pathname === '/dashboard/policies' ? 'Issue Policy' :
+                 location.pathname === '/dashboard/policies' ? 'Add Service' :
                  location.pathname === '/dashboard/payments' ? 'Record Payment' :
                  'Create New Record'}
               </span>
@@ -206,8 +213,9 @@ const Dashboard: React.FC = () => {
           <Routes>
             <Route index element={<DashboardHome />} />
             <Route path="clients" element={<ClientsView />} />
-            <Route path="policies" element={<PoliciesView />} />
+            <Route path="policies" element={<ServicesView />} />
             <Route path="payments" element={<PaymentsView />} />
+            <Route path="ai" element={<AIAssistant />} />
             <Route path="settings" element={<div className="bg-white p-20 rounded-[3rem] text-center italic text-gray-400">Settings section coming soon...</div>} />
           </Routes>
         </motion.div>

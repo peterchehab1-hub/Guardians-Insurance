@@ -143,7 +143,7 @@ const PlanComparer: React.FC<PlanComparerProps> = ({ isOpen, onClose, initialTyp
 
   const renderResults = () => {
     if (!type) return null;
-    const results = COMPARISON_DATA[type];
+    const results = COMPARISON_DATA[type] || COMPARISON_DATA['car']; // Fallback to car if type not in comparative data
 
     return (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">

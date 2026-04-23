@@ -1,40 +1,72 @@
-import { collection, addDoc, getDocs, writeBatch, doc } from 'firebase/firestore';
-import { db } from './firebase';
+import { collection, addDoc, getDocs, writeBatch, doc, query, where, serverTimestamp } from 'firebase/firestore';
+import { db, auth } from './firebase';
 import { SERVICES_DATA } from '../../constants';
 
 export const seedInitialData = async () => {
-  const servicesSnapshot = await getDocs(collection(db, 'services'));
-  
-  if (servicesSnapshot.empty) {
-    console.log('Seeding initial services...');
-    const batch = writeBatch(db);
+  try {
+    const currentUser = auth.currentUser;
+    console.log('--- SEEDING AUTH CHECK ---');
+    console.log('User detected:', !!currentUser);
+    if (currentUser) {
+      console.log('User Email:', currentUser?.email);
+      console.log('User UID:', currentUser?.uid);
+      console.log('Is Email Verified:', currentUser?.emailVerified);
+    }
+    console.log('--------------------------');
+
+    console.log('Operation: Fetching services snapshot');
+    const servicesSnapshot = await getDocs(collection(db, 'services'));
+    const existingTitles = servicesSnapshot.docs.map(d => d.data().title);
     
+    let seededCount = 0;
+    
+    console.log('Operation: Reviewing services to add');
     for (const service of SERVICES_DATA) {
-      const newDocRef = doc(collection(db, 'services'));
-      // Firestore uses doc id, and we standardize on imageUrl
-      const { id, ...data } = service;
-      batch.set(newDocRef, { 
-        ...data, 
-        category: 'General',
-        imageUrl: service.imageUrl || service.image || ''
-      });
+      if (!existingTitles.includes(service.title)) {
+        const { id: _, ...data } = service;
+        const payload = {
+          ...data,
+          category: 'General',
+          imageUrl: service.imageUrl || service.image || '',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+        console.log(`Operation: Adding service: ${service.title}`);
+        await addDoc(collection(db, 'services'), payload);
+        seededCount++;
+      }
     }
     
-    await batch.commit();
+    if (seededCount > 0) console.log(`Result: Synced ${seededCount} services.`);
 
-    // Seed a sample client profile for testing
-    const clientEmail = 'client@example.com';
-    const clientUid = 'SAMPLE_CLIENT_UID'; // This won't match real auth, but we create the doc
-    // In reality, the admin would create this doc when registering a client
+    console.log('Operation: Fetching clients snapshot');
+    const allClientsSnapshot = await getDocs(collection(db, 'clients'));
+    const peterExists = allClientsSnapshot.docs.some(doc => 
+      doc.data().phone === '71971213' || 
+      (doc.data().name === 'Peter' && doc.data().phone === '71971213')
+    );
     
-    const userRef = doc(db, 'users', 'client_test_id'); // We'd actually need the real UID
-    // But for the sake of the blueprint and testing, let's just seed a generic one 
-    // or better, instruct the user.
+    if (!peterExists) {
+      console.log('Operation: Seeding master test account (Peter)');
+      await addDoc(collection(db, 'clients'), {
+        name: 'Peter',
+        phone: '71971213',
+        email: 'peter@test.com',
+        address: 'Beirut, Lebanon',
+        policyType: 'Home Insurance',
+        policyNumber: 'G-71971213',
+        premium: '500',
+        role: 'client',
+        idImageUrls: [],
+        createdAt: serverTimestamp()
+      });
+      console.log('Result: Test account ready!');
+    }
     
-    console.log('Seeding complete!');
-    return true;
-  } else {
-    console.log('Services collection already has data. Skipping seed.');
-    return false;
+    return seededCount > 0 || !peterExists;
+  } catch (error: any) {
+    console.error('Logic Failure Point:', error.message);
+    console.error('Full Error Object:', error);
+    throw error;
   }
 };

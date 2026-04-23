@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../src/lib/firebase';
 import { motion } from 'motion/react';
 import { LogIn, Mail, Lock, AlertCircle, Shield, User } from 'lucide-react';
+import { useAuth } from '../src/contexts/AuthContext.tsx';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { setProfile } = useAuth();
   const roleParam = searchParams.get('role') || 'client'; // Default to client
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -21,6 +23,28 @@ const Login: React.FC = () => {
     setError('');
 
     try {
+      if (roleParam === 'client') {
+        // Custom Logic: Check client collection for name=email and phone=password
+        const q = query(
+          collection(db, 'clients'), 
+          where('name', '==', email), 
+          where('phone', '==', password)
+        );
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const clientData = querySnapshot.docs[0].data();
+          setProfile({
+            uid: querySnapshot.docs[0].id,
+            email: clientData.email || `${clientData.name}@client.com`,
+            role: 'client',
+            ...clientData
+          } as any);
+          navigate('/client-dashboard');
+          return;
+        }
+      }
+
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -83,21 +107,29 @@ const Login: React.FC = () => {
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Email Address</label>
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+              {isClient ? 'Full Name' : 'Email Address'}
+            </label>
             <div className="relative">
-              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              {isClient ? (
+                <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              ) : (
+                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              )}
               <input 
                 required
-                type="email" 
+                type={isClient ? 'text' : 'email'} 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@guardians.com" 
+                placeholder={isClient ? 'e.g. Peter' : 'admin@guardians.com'} 
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-14 pr-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium" 
               />
             </div>
           </div>
           <div>
-            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Password</label>
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+              {isClient ? 'Phone Number' : 'Password'}
+            </label>
             <div className="relative">
               <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
@@ -105,7 +137,7 @@ const Login: React.FC = () => {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••" 
+                placeholder={isClient ? 'e.g. 71971213' : '••••••••'} 
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-14 pr-6 py-4 focus:outline-none focus:ring-2 focus:ring-teal-primary transition-all font-medium" 
               />
             </div>

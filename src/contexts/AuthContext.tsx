@@ -8,9 +8,10 @@ interface AuthContextType {
   user: User | null;
   profile: UserProfile | null;
   loading: boolean;
+  setProfile: (profile: UserProfile | null) => void;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, profile: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, profile: null, loading: true, setProfile: () => {} });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -26,15 +27,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             setProfile({ uid: user.uid, ...docSnap.data() } as UserProfile);
-          } else {
-            // Default profile for new users or if doc doesn't exist yet
-            setProfile(null);
           }
         } catch (err) {
           console.error("Error fetching user profile:", err);
-          setProfile(null);
         }
       } else {
+        // Only clear profile on logout if there isn't a manual "pseudo-profile" 
+        // This is tricky. Let's just allow the manual profile to persist or be cleared.
         setProfile(null);
       }
       setLoading(false);
@@ -44,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading }}>
+    <AuthContext.Provider value={{ user, profile, loading, setProfile }}>
       {children}
     </AuthContext.Provider>
   );

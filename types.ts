@@ -37,6 +37,12 @@ export interface UserProfile {
   role: UserRole;
   displayName?: string;
   clientId?: string; // Links a client user to their client record
+  name?: string;
+  phone?: string;
+  address?: string;
+  policyType?: string;
+  policyNumber?: string;
+  premium?: number | string;
 }
 
 export interface ComparisonResult {

@@ -32,6 +32,48 @@ export const insuranceService = {
     }
   },
 
+  async createService(serviceData: any, imageFile?: File) {
+    try {
+      let imageUrl = serviceData.imageUrl || '';
+      if (imageFile) {
+        imageUrl = await this.uploadFile(imageFile, `services/${Date.now()}_${imageFile.name}`);
+      }
+      const docRef = await addDoc(collection(db, SERVICES_COLLECTION), {
+        ...serviceData,
+        imageUrl,
+        createdAt: serverTimestamp()
+      });
+      return docRef.id;
+    } catch (error) {
+      return handleFirestoreError(error, 'create', SERVICES_COLLECTION);
+    }
+  },
+
+  async updateService(id: string, serviceData: any, imageFile?: File) {
+    try {
+      let imageUrl = serviceData.imageUrl;
+      if (imageFile) {
+        imageUrl = await this.uploadFile(imageFile, `services/${Date.now()}_${imageFile.name}`);
+      }
+      const docRef = doc(db, SERVICES_COLLECTION, id);
+      await updateDoc(docRef, {
+        ...serviceData,
+        imageUrl,
+        updatedAt: serverTimestamp()
+      });
+    } catch (error) {
+      return handleFirestoreError(error, 'update', `${SERVICES_COLLECTION}/${id}`);
+    }
+  },
+
+  async deleteService(id: string) {
+    try {
+      await deleteDoc(doc(db, SERVICES_COLLECTION, id));
+    } catch (error) {
+      return handleFirestoreError(error, 'delete', `${SERVICES_COLLECTION}/${id}`);
+    }
+  },
+
   async getServiceById(id: string): Promise<Service | null> {
     try {
       const docRef = doc(db, SERVICES_COLLECTION, id);
